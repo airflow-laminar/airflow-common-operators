@@ -4,7 +4,7 @@ build-backend="hatchling.build"
 
 [project]
 name = "airflow-common-operators"
-authors = [{name = "the airflow-common-operators authors", email = "3105306+timkpaine@users.noreply.github.com"}]
+authors = [{name = "the airflow-common-operators authors", email = "t.paine154@gmail.com"}]
 description = "Common operators and tasks for airflow"
 readme = "README.md"
 license = { text = "Apache-2.0" }
@@ -14,10 +14,10 @@ keywords = []
 
 classifiers = [
     "Development Status :: 3 - Alpha",
+    "Programming Language :: Python",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -27,10 +27,6 @@ classifiers = [
 dependencies = [
     "apache-airflow>=2,<3",
 ]
-
-[project.urls]
-Repository = "https://github.com/airflow-laminar/airflow-common-operators"
-Homepage = "https://github.com/airflow-laminar/airflow-common-operators"
 
 [project.optional-dependencies]
 develop = [
@@ -46,11 +42,12 @@ develop = [
     # Config
     "airflow-config>=0.1.2",
 ]
-config = [
-    "airflow-config>=0.1.2",
-]
 
 [project.scripts]
+
+[project.urls]
+Repository = "https://github.com/airflow-laminar/airflow-common-operators"
+Homepage = "https://github.com/airflow-laminar/airflow-common-operators"
 
 [tool.bumpversion]
 current_version = "0.1.0"
@@ -72,8 +69,22 @@ ignore = [
     ".copier-answers.yml",
     "Makefile",
     "setup.py",
-    "docs/*/*",
+    "docs/**/*",
 ]
+
+[tool.coverage.run]
+branch = true
+omit = [
+    "airflow_common_operators/tests/integration/",
+]
+[tool.coverage.report]
+exclude_also = [
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "@(abc\\.)?abstractmethod",
+]
+ignore_errors = true
+fail_under = 50
 
 [tool.hatch.build]
 artifacts = []
@@ -82,49 +93,27 @@ artifacts = []
 src = "/"
 
 [tool.hatch.build.targets.sdist]
-include = [
-    "/airflow_common_operators",
-    "LICENSE",
-    "README.md",
-]
-exclude = [
-    "/.github",
-    "/.gitattributes",
-    "/.gitignore",
-    "/docs",
-]
+packages = ["airflow_common_operators"]
 
 [tool.hatch.build.targets.wheel]
-include = [
-    "/airflow_common_operators",
-]
-exclude = [
-    "/.github",
-    "/.gitattributes",
-    "/.gitignore",
-    "/pyproject.toml",
-    "/docs",
-]
-
-[tool.hatch.build.targets.wheel.shared-data]
+packages = ["airflow_common_operators"]
 
 [tool.pytest.ini_options]
+addopts = ["-vvv", "--junitxml=junit.xml"]
 asyncio_mode = "strict"
 testpaths = "airflow_common_operators/tests"
 
 [tool.ruff]
 line-length = 150
 
+[tool.ruff.lint]
+extend-select = ["I"]
+
 [tool.ruff.lint.isort]
 combine-as-imports = true
 default-section = "third-party"
 known-first-party = ["airflow_common_operators"]
-section-order = [
-    "future",
-    "third-party",
-    "first-party",
-    "local-folder",
-]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401", "F403"]
@@ -134,3 +123,4 @@ title = "airflow-common-operators"
 root = "README.md"
 pages = ["docs/src/API.md"]
 use-autoapi = false
+

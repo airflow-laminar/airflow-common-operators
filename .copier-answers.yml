@@ -1,8 +1,8 @@
 # Changes here will be overwritten by Copier
-_commit: acb4a69
+_commit: 8e4633d
 _src_path: ../../templates/base
 add_extension: python
-email: 3105306+timkpaine@users.noreply.github.com
+email: t.paine154@gmail.com
 github: airflow-laminar
 project_description: Common operators and tasks for airflow
 project_name: airflow-common-operators

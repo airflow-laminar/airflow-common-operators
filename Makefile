@@ -7,7 +7,7 @@ develop:  ## install dependencies and build library
 	python -m pip install -e .[develop]
 
 build:  ## build the python library
-	python setup.py build build_ext --inplace
+	python -m build -n
 
 install:  ## install library
 	python -m pip install .
@@ -53,10 +53,10 @@ annotate:  ## run python type annotation checks with mypy
 .PHONY: test coverage tests
 
 test:  ## run python tests
-	python -m pytest -v airflow_common_operators/tests --junitxml=junit.xml
+	python -m pytest -v airflow_common_operators/tests
 
 coverage:  ## run tests and collect test coverage
-	python -m pytest -v airflow_common_operators/tests --junitxml=junit.xml --cov=airflow_common_operators --cov-branch --cov-fail-under=60 --cov-report term-missing --cov-report xml
+	python -m pytest -v airflow_common_operators/tests --cov=airflow_common_operators --cov-report term-missing --cov-report xml
 
 # Alias
 tests: test
