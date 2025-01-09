@@ -1,0 +1,18 @@
+# @package extensions.libraries
+
+defaults: []
+
+_target_: airflow_common_operators.LibraryList
+pip:
+  - name: lib1
+  - name: lib2
+  - name: lib3
+git:
+  - name: git1
+    repo: test
+  - name: git2
+    repo: test
+    branch: develop
+  - name: git3
+    repo: test
+    
