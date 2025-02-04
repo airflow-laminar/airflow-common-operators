@@ -5,7 +5,7 @@ from .common import Tool
 __all__ = ("clone_repo", "GitRepo")
 
 
-def clone_repo(name, repo, branch="main", install=True, tool: Tool = "pip"):
+def clone_repo(name, repo, branch="main", *, install=True, tool: Tool = "pip"):
     ret = f"""
 [[ -d {name} ]] || git clone {repo}
 pushd {name}
@@ -29,5 +29,5 @@ class GitRepo(BaseModel):
     repo: str
     branch: str = "main"
 
-    def clone(self, install: bool = True):
-        return clone_repo(name=self.name, repo=self.repo, branch=self.branch, install=install)
+    def clone(self, install: bool = True, tool: Tool = "pip"):
+        return clone_repo(name=self.name, repo=self.repo, branch=self.branch, install=install, tool=tool)
