@@ -4,7 +4,8 @@ from airflow.models.baseoperator import BaseOperator
 from airflow.models.dag import DAG
 from airflow.operators.python import PythonOperator
 
-from .common import fail, pass_, ping
+from .airflow import fail, pass_
+from .host import ping
 
 __all__ = ("all_success_any_failure", "if_booted_do")
 
