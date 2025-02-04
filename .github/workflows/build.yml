@@ -68,12 +68,7 @@ jobs:
     - name: Publish Unit Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2
       with:
-<<<<<<< before updating
-        files: |
-            **/junit.xml
-=======
         files: '**/junit.xml'
->>>>>>> after updating
 
     - name: Upload coverage
       uses: codecov/codecov-action@v5
