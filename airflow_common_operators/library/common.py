@@ -1,11 +1,15 @@
 from typing import Literal
 
+from pydantic import BaseModel
+
 Tool = Literal["pip", "uv"]
 
 
-def in_conda_env(env: str, command: str, tool: str = "micromamba") -> str:
-    return f""" {tool} activate {env} && {command} """
+__all__ = ("BaseInstallable",)
 
 
-def in_virtual_env(env: str, command: str) -> str:
-    return f""" source {env}/bin/activate && {command} """
+class BaseInstallable(BaseModel):
+    name: str
+    install_deps: bool = False
+    tool: Tool = "pip"
+    virtualenv: str = ""
