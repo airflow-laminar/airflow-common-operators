@@ -1,6 +1,7 @@
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from ccflow import BaseModel
+from pydantic import Field
 
 from .common import Tool
 from .git import GitRepo
