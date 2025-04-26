@@ -1,3 +1,6 @@
+__all__ = ("link",)
+
+
 def link(source, target, unlink: bool = True):
     """Link a file or directory to another location.
 
