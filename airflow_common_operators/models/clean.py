@@ -1,11 +1,11 @@
 from datetime import datetime, timedelta
 
-from airflow.models import DagBag, DagRun
+from airflow.models import DagModel, DagRun
 from airflow.utils.session import provide_session
 from airflow.utils.state import State
 from pytz import UTC
 
-from ..models import BaseModel
+from . import BaseModel
 
 __all__ = ("DagCleanup",)
 
@@ -36,13 +36,12 @@ class DagCleanup(BaseModel):
             utc_now = datetime.utcnow().replace(tzinfo=UTC)
             cutoff_date = utc_now - timedelta(days=days_to_keep)
 
-            # Fetch all DAGs from the DagBag (this fetches all DAGs from the environment)
-            dagbag = DagBag()
-            all_dags = dagbag.dags
+            # Fetch all DAGs from the DagBag
+            dag_ids = session.query(DagModel.dag_id).distinct(DagModel.dag_id).all()
 
             deleted = 0
 
-            for dag_id, _ in all_dags.items():
+            for dag_id in dag_ids:
                 print(f"Cleaning up DAG: {dag_id}")
 
                 # Query for DAG runs of each DAG
@@ -68,7 +67,7 @@ class DagCleanup(BaseModel):
                             # Mark failed runs as successful
                             dr.state = State.SUCCESS
                             session.merge(dr)
-                    else:
+                    elif not mark_failed_as_successful:
                         break  # Since they are ordered, no more to delete
 
             session.commit()
