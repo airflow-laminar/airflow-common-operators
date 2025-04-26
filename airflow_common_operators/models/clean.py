@@ -67,7 +67,7 @@ class DagCleanup(BaseModel):
                             # Mark failed runs as successful
                             dr.state = State.SUCCESS
                             session.merge(dr)
-                    else:
+                    elif not mark_failed_as_successful:
                         break  # Since they are ordered, no more to delete
 
             session.commit()
