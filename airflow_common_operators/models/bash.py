@@ -1,19 +1,14 @@
-from typing import List as PythonList
+from typing import List
 
-from pkn import Dict, List  # noqa: F401
 from pydantic import BaseModel
 
-from .common import in_bash
-
-__all__ = (
-    "List",
-    "Dict",
-    "BashCommands",
-)
+__all__ = ("BashCommands",)
 
 
 class BashCommands(BaseModel):
-    commands: PythonList[str]
+    commands: List[str]
 
     def render(self, quote: str = "'", escape: bool = False, login: bool = True) -> str:
+        from airflow_common_operators import in_bash
+
         return in_bash("\n".join(["set -ex"] + self.commands), quote=quote, escape=escape, login=login)

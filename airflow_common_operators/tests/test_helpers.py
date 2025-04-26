@@ -9,8 +9,8 @@ class TestHelpers:
     @pytest.mark.parametrize("make_list", [True, False])
     def test_if_booted_do(self, make_list):
         with (
-            patch("airflow_common_operators.helpers.PythonOperator") as mock_python_operator,
-            patch("airflow_common_operators.helpers.ping") as mock_ping,
+            patch("airflow_common_operators.airflow.topology.PythonOperator") as mock_python_operator,
+            patch("airflow_common_operators.airflow.topology.ping") as mock_ping,
         ):
             if make_list:
                 task = if_booted_do(task_id="task", host="host", task=[MagicMock()])
@@ -27,7 +27,7 @@ class TestHelpers:
                 mock_python_operator.return_value.__rshift__.assert_called_once_with(task)
 
     def test_all_success_any_failure(self):
-        with patch("airflow_common_operators.helpers.PythonOperator") as mock_python_operator:
+        with patch("airflow_common_operators.airflow.topology.PythonOperator") as mock_python_operator:
             task = MagicMock()
             dag = MagicMock()
 
