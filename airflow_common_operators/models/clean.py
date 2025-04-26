@@ -37,7 +37,7 @@ class DagCleanup(BaseModel):
             cutoff_date = utc_now - timedelta(days=days_to_keep)
 
             # Fetch all DAGs from the DagBag
-            dag_ids = session.query(DagModel.dag_id).distinct(DagModel.dag_id).all()
+            dag_ids = [d.dag_id for d in session.query(DagModel.dag_id).distinct(DagModel.dag_id).all()]
 
             deleted = 0
 
