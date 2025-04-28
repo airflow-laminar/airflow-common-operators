@@ -26,11 +26,11 @@ class DagCleanup(BaseModel):
             params = context["params"]
 
             # Get the configurable parameters
-            delete_successful = params.get("delete_successful", DagCleanup.__pydantic_fields__["delete_successful"].default)
-            delete_failed = params.get("delete_failed", DagCleanup.__pydantic_fields__["delete_failed"].default)
-            mark_failed_as_successful = params.get("mark_failed_as_successful", DagCleanup.__pydantic_fields__["mark_failed_as_successful"].default)
-            max_dagruns = params.get("max_dagruns", DagCleanup.__pydantic_fields__["max_dagruns"].default)
-            days_to_keep = params.get("days_to_keep", DagCleanup.__pydantic_fields__["days_to_keep"].default)
+            delete_successful = params.get("delete_successful", DagCleanup.model_fields["delete_successful"].default)
+            delete_failed = params.get("delete_failed", DagCleanup.model_fields["delete_failed"].default)
+            mark_failed_as_successful = params.get("mark_failed_as_successful", DagCleanup.model_fields["mark_failed_as_successful"].default)
+            max_dagruns = params.get("max_dagruns", DagCleanup.model_fields["max_dagruns"].default)
+            days_to_keep = params.get("days_to_keep", DagCleanup.model_fields["days_to_keep"].default)
 
             # Make cutoff_date timezone-aware (UTC)
             utc_now = datetime.utcnow().replace(tzinfo=UTC)
