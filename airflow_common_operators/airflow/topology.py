@@ -5,7 +5,7 @@ from airflow.models.dag import DAG
 from airflow.operators.python import PythonOperator
 
 from ..utility import ping
-from .trigger import fail, pass_
+from .utility import fail, pass_
 
 __all__ = ("all_success_any_failure", "if_booted_do")
 
