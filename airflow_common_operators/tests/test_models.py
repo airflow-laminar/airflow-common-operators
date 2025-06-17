@@ -11,7 +11,7 @@ class TestModels:
                 "echo 'goodbye world'",
             ]
         )
-        assert cmds.render() == "bash -lc 'set -ex\necho 'hello world'\necho 'goodbye world''"
+        assert cmds.model_dump() == "bash -lc 'set -ex\necho 'hello world'\necho 'goodbye world''"
 
     def test_dag_cleanup(self):
         d = DagCleanup()
