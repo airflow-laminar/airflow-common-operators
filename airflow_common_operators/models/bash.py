@@ -1,14 +1,18 @@
 from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, model_serializer
 
 __all__ = ("BashCommands",)
 
 
 class BashCommands(BaseModel):
     commands: List[str]
+    quote: str = "'"
+    escape: bool = False
+    login: bool = True
 
-    def render(self, quote: str = "'", escape: bool = False, login: bool = True) -> str:
+    @model_serializer()
+    def _serialize(self) -> str:
         from airflow_common_operators import in_bash
 
-        return in_bash("\n".join(["set -ex"] + self.commands), quote=quote, escape=escape, login=login)
+        return in_bash("\n".join(["set -ex"] + self.commands), quote=self.quote, escape=self.escape, login=self.login)
