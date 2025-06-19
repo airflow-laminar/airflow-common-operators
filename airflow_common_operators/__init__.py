@@ -5,4 +5,4 @@ from .library import *
 from .models import *
 from .utility import *
 
-__version__ = "0.6.0"
+__version__ = "0.6.1"
