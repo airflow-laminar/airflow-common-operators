@@ -1,3 +1,5 @@
+from airflow_pydantic import *
+
 from .airflow import *
 from .library import *
 from .models import *
