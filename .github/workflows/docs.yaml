@@ -13,8 +13,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.11
-      - run: pip install .[develop]
-      - run: pip install yardang
+      - run: uv pip install .[develop]
+      - run: uv pip install yardang
       - run: yardang build
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
