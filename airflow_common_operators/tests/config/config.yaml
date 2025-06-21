@@ -10,6 +10,7 @@ dags:
   test_cleanup:
     schedule: "0 0 * * *"
     max_active_tasks: 1
+    params: ${.tasks.cleanup_task}
     tasks:
       cleanup_task:
         _target_: airflow_common_operators.DagCleanupTask
