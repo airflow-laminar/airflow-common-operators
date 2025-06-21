@@ -6,10 +6,11 @@ from airflow.operators.python import PythonOperator
 from airflow.utils.session import provide_session
 from airflow.utils.state import State
 from airflow_pydantic import CallablePath, Task, TaskArgs
-from pydantic import Field, field_validator
+from pydantic import BaseModel, Field, field_validator
 from pytz import UTC
 
 __all__ = (
+    "DagCleanupParams",
     "DagCleanupOperatorArgs",
     "DagCleanupTaskArgs",
     "DagCleanupOperator",
@@ -17,12 +18,15 @@ __all__ = (
 )
 
 
-class DagCleanupTaskArgs(TaskArgs, extra="allow"):
-    delete_successful: Optional[bool] = True
-    delete_failed: Optional[bool] = True
-    mark_failed_as_successful: Optional[bool] = False
-    max_dagruns: Optional[int] = 10
-    days_to_keep: Optional[int] = 10
+class DagCleanupParams(BaseModel):
+    delete_successful: Optional[bool] = Field(default=True)
+    delete_failed: Optional[bool] = Field(default=True)
+    mark_failed_as_successful: Optional[bool] = Field(default=False)
+    max_dagruns: Optional[int] = Field(default=10)
+    days_to_keep: Optional[int] = Field(default=10)
+
+
+class DagCleanupTaskArgs(DagCleanupParams, TaskArgs, extra="allow"): ...
 
 
 # Alias
