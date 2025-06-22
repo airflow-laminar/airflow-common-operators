@@ -46,6 +46,7 @@ develop = [
     "wheel",
     # Config
     "airflow-config>=0.1.2",
+    "airflow-pydantic>=1.2.15",
 ]
 
 [project.scripts]
