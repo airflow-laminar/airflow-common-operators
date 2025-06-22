@@ -20,13 +20,11 @@ with DAG(
     schedule="0 0 * * *",
     max_active_tasks=1,
     params={
-        "delete_successful": Param(default=True, description=None, schema={"type": ["null", "boolean"], "title": "Delete Successful"}),
-        "delete_failed": Param(default=True, description=None, schema={"type": ["null", "boolean"], "title": "Delete Failed"}),
-        "mark_failed_as_successful": Param(
-            default=False, description=None, schema={"type": ["null", "boolean"], "title": "Mark Failed As Successful"}
-        ),
-        "max_dagruns": Param(default=10, description=None, schema={"type": ["null", "integer"], "title": "Max Dagruns"}),
-        "days_to_keep": Param(default=10, description=None, schema={"type": ["null", "integer"], "title": "Days To Keep"}),
+        "delete_successful": Param(True, title="Delete Successful", description=None, type="boolean"),
+        "delete_failed": Param(True, title="Delete Failed", description=None, type="boolean"),
+        "mark_failed_as_successful": Param(False, title="Mark Failed As Successful", description=None, type="boolean"),
+        "max_dagruns": Param(10, title="Max Dagruns", description=None, type="integer"),
+        "days_to_keep": Param(10, title="Days To Keep", description=None, type="integer"),
     },
     dag_id="test_cleanup",
 ) as dag:
