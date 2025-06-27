@@ -1,6 +1,7 @@
-from airflow_common_operators import __version__
+def test_reexports():
+    from pkn import Dict, List
 
+    from airflow_common_operators import Dict as ADict, List as AList
 
-def test_all():
-    assert __version__
-    assert True
+    assert Dict is ADict
+    assert List is AList
