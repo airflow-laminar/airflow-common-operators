@@ -6,4 +6,4 @@ from .models import *
 from .tasks import *
 from .utility import *
 
-__version__ = "0.6.3"
+__version__ = "0.6.4"
