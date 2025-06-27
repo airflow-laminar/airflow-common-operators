@@ -15,10 +15,14 @@ class TestConfig:
 from airflow.models import DAG
 from airflow.models.param import Param
 from airflow_common_operators.tasks.dag_clean import create_cleanup_dag_runs
+from datetime import datetime
 
 with DAG(
     schedule="0 0 * * *",
+    start_date=datetime.fromisoformat("2025-01-01T00:00:00-04:56"),
     max_active_tasks=1,
+    max_active_runs=1,
+    catchup=False,
     params={
         "delete_successful": Param(True, title="Delete Successful", description=None, type="boolean"),
         "delete_failed": Param(True, title="Delete Failed", description=None, type="boolean"),
@@ -27,6 +31,7 @@ with DAG(
         "days_to_keep": Param(10, title="Days To Keep", description=None, type="integer"),
     },
     dag_id="test_cleanup",
+    default_args={},
 ) as dag:
     cleanup_task = create_cleanup_dag_runs(task_id="cleanup_task", dag=dag)
 """
