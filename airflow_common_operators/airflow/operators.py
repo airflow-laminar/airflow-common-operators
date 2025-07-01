@@ -1,21 +1,21 @@
-from airflow.operators.python import PythonOperator
+from airflow_pydantic.airflow import PythonOperator
 
 from .utility import fail, pass_, skip
 
 __all__ = (
-    "SkipTask",
-    "FailTask",
-    "PassTask",
+    "Skip",
+    "Fail",
+    "Pass",
 )
 
 
-def SkipTask(task_id: str, **kwargs) -> PythonOperator:
+def Skip(task_id: str, **kwargs) -> PythonOperator:
     return PythonOperator(task_id=task_id, python_callable=skip, **kwargs)
 
 
-def FailTask(task_id: str, **kwargs) -> PythonOperator:
+def Fail(task_id: str, **kwargs) -> PythonOperator:
     return PythonOperator(task_id=task_id, python_callable=fail, **kwargs)
 
 
-def PassTask(task_id: str, **kwargs) -> PythonOperator:
+def Pass(task_id: str, **kwargs) -> PythonOperator:
     return PythonOperator(task_id=task_id, python_callable=pass_, **kwargs)

@@ -1,9 +1,16 @@
-from airflow_config import DAG, load_config
+import pytest
+from airflow_config import load_config
 
 
 class TestConfig:
     def test_cleanup_task(self):
         conf = load_config("config", "config")
+
+        try:
+            from airflow_config import DAG
+        except ImportError:
+            return pytest.skip("Airflow DAG not available in this environment")
+
         d = DAG(dag_id="test_cleanup", config=conf)
         assert len(d.tasks) == 1
 

@@ -1,5 +1,5 @@
 import pytest
-from airflow.exceptions import AirflowFailException, AirflowSkipException
+from airflow_pydantic.airflow import AirflowFailException, AirflowSkipException
 
 from airflow_common_operators import fail, pass_, skip
 

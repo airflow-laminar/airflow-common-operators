@@ -1,13 +1,12 @@
 from datetime import datetime, timedelta
-from typing import Optional, Type
+from typing import TYPE_CHECKING, Optional, Type
 
-from airflow.models import DagModel, DagRun
-from airflow.operators.python import PythonOperator
-from airflow.utils.session import provide_session
-from airflow.utils.state import State
 from airflow_pydantic import CallablePath, Task, TaskArgs
 from pydantic import BaseModel, Field, field_validator
 from pytz import UTC
+
+if TYPE_CHECKING:
+    from airflow.operators.python import PythonOperator
 
 __all__ = (
     "DagCleanupParams",
@@ -33,7 +32,12 @@ class DagCleanupTaskArgs(DagCleanupParams, TaskArgs, extra="allow"): ...
 DagCleanupOperatorArgs = DagCleanupTaskArgs
 
 
-def create_cleanup_dag_runs(**kwargs) -> PythonOperator:
+def create_cleanup_dag_runs(**kwargs) -> "PythonOperator":
+    from airflow.models import DagModel, DagRun
+    from airflow.operators.python import PythonOperator
+    from airflow.utils.session import provide_session
+    from airflow.utils.state import State
+
     @provide_session
     def _cleanup_dag_runs(session=None, **context):
         params = context["params"]
