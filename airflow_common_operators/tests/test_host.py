@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 import pytest
-from airflow.exceptions import AirflowSkipException
+from airflow_pydantic.airflow import AirflowSkipException
 
 from airflow_common_operators import ping
 

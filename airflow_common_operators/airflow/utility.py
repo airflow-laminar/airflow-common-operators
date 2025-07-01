@@ -1,4 +1,4 @@
-from airflow.exceptions import AirflowFailException, AirflowSkipException
+from airflow_pydantic.airflow import AirflowFailException, AirflowSkipException
 
 __all__ = (
     "skip",

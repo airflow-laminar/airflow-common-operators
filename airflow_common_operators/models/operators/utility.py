@@ -1,6 +1,6 @@
 from typing import Optional
 
-from airflow_pydantic import CallablePath, ImportPath, Task, TaskArgs
+from airflow_pydantic import CallablePath, ImportPath, PythonTask, PythonTaskArgs
 from pydantic import Field
 
 __all__ = (
@@ -13,25 +13,49 @@ __all__ = (
 )
 
 
-class SkipOperatorArgs(TaskArgs, extra="allow"):
+class SkipTaskArgs(PythonTaskArgs):
     python_callable: Optional[CallablePath] = Field(default="airflow_common_operators.skip", description="python_callable")
 
 
-class FailOperatorArgs(TaskArgs, extra="allow"):
+# Alias
+SkipOperatorArgs = SkipTaskArgs
+
+
+class FailTaskArgs(PythonTaskArgs):
     python_callable: Optional[CallablePath] = Field(default="airflow_common_operators.fail", description="python_callable")
 
 
-class PassOperatorArgs(TaskArgs, extra="allow"):
+# Alias
+FailOperatorArgs = FailTaskArgs
+
+
+class PassTaskArgs(PythonTaskArgs):
     python_callable: Optional[CallablePath] = Field(default="airflow_common_operators.pass_", description="python_callable")
 
 
-class SkipOperator(Task, SkipOperatorArgs):
-    operator: ImportPath = Field(default="airflow.operators.python.PythonOperator", description="airflow operator path", validate_default=True)
+# Alias
+PassOperatorArgs = PassTaskArgs
 
 
-class FailOperator(Task, FailOperatorArgs):
-    operator: ImportPath = Field(default="airflow.operators.python.PythonOperator", description="airflow operator path", validate_default=True)
+class SkipTask(PythonTask, SkipOperatorArgs):
+    operator: ImportPath = Field(default="airflow_pydantic.airflow.PythonOperator", description="airflow operator path", validate_default=True)
 
 
-class PassOperator(Task, PassOperatorArgs):
-    operator: ImportPath = Field(default="airflow.operators.python.PythonOperator", description="airflow operator path", validate_default=True)
+# Alias
+SkipOperator = SkipTask
+
+
+class FailTask(PythonTask, FailOperatorArgs):
+    operator: ImportPath = Field(default="airflow_pydantic.airflow.PythonOperator", description="airflow operator path", validate_default=True)
+
+
+# Alias
+FailOperator = FailTask
+
+
+class PassTask(PythonTask, PassOperatorArgs):
+    operator: ImportPath = Field(default="airflow_pydantic.airflow.PythonOperator", description="airflow operator path", validate_default=True)
+
+
+# Alias
+PassOperator = PassTask

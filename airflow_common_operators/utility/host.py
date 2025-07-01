@@ -1,7 +1,7 @@
 from subprocess import call
 from typing import Callable
 
-from airflow.exceptions import AirflowSkipException
+from airflow_pydantic.airflow import AirflowSkipException
 
 __all__ = ("ping",)
 

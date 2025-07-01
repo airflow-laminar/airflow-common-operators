@@ -1,11 +1,7 @@
 from datetime import datetime, timedelta
 
-from airflow.models import DagModel, DagRun
-from airflow.utils.session import provide_session
-from airflow.utils.state import State
+from airflow_pydantic import BaseModel
 from pytz import UTC
-
-from . import BaseModel
 
 __all__ = ("DagCleanup",)
 
@@ -21,6 +17,10 @@ class DagCleanup(BaseModel):
 
     @property
     def cleanup_dag_runs(self):
+        from airflow.models import DagModel, DagRun
+        from airflow.utils.session import provide_session
+        from airflow.utils.state import State
+
         @provide_session
         def _cleanup_dag_runs(session=None, **context):
             params = context["params"]

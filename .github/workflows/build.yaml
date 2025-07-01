@@ -32,6 +32,8 @@ jobs:
         os: [ubuntu-latest]
         python-version: ["3.11"]
         airflow: ["<3", ">=3"]
+        # TODO: enable after airflow-config release
+        # airflow: ["<3", ">=3", ""]
 
     steps:
     - uses: actions/checkout@v4
@@ -45,6 +47,11 @@ jobs:
 
     - name: Install Airflow
       run: uv pip install "apache-airflow${{ matrix.airflow }}"
+      if: ${{ matrix.airflow != '' }}
+
+    - name: Uninstall Airflow
+      run: uv pip uninstall apache-airflow
+      if: ${{ matrix.airflow == '' }}
 
     - name: Lint
       run: make lint
