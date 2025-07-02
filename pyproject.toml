@@ -127,4 +127,3 @@ title = "airflow-common-operators"
 root = "README.md"
 pages = ["docs/src/API.md"]
 use-autoapi = false
-
