@@ -1,8 +1,9 @@
 from unittest.mock import MagicMock, call, patch
 
 import pytest
+from airflow_pydantic import fail, pass_
 
-from airflow_common_operators import all_success_any_failure, fail, if_booted_do, pass_
+from airflow_common_operators import all_success_any_failure, if_booted_do
 
 
 class TestHelpers:

@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel
+from airflow_pydantic import BaseModel
 
 Tool = Literal["pip", "uv"]
 

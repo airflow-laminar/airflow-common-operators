@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from airflow_pydantic import BaseModel
 
 from .common import Tool
 
