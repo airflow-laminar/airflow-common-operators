@@ -1,9 +1,7 @@
 from typing import TYPE_CHECKING, List, Optional
 
+from airflow_pydantic import fail, pass_, ping
 from airflow_pydantic.airflow import PythonOperator
-
-from ..utility import ping
-from .utility import fail, pass_
 
 if TYPE_CHECKING:
     from airflow.models.baseoperator import BaseOperator

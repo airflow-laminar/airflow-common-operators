@@ -1,6 +1,5 @@
+from airflow_pydantic import fail, pass_, skip
 from airflow_pydantic.airflow import PythonOperator
-
-from .utility import fail, pass_, skip
 
 __all__ = (
     "Skip",
