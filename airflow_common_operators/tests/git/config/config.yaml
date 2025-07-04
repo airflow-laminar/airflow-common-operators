@@ -14,6 +14,7 @@ dags:
         bash_command: "echo '1'"
       run:
         _target_: airflow_common_operators.LibraryListSSHTask
+        command_prefix: echo "test"
         git: ${extensions.libraries.git}
         pip: ${extensions.libraries.pip}
         dependencies: [first]

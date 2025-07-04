@@ -23,6 +23,7 @@ with DAG(
             {"name": "lib3", "version_constraint": "!=1.0"},
         ],
         git=[{"name": "git1", "repo": "test"}, {"name": "git2", "repo": "test", "branch": "develop"}, {"name": "git3", "repo": "test"}],
+        command_prefix='echo "test"',
         task_id="run",
         dag=dag,
     )
