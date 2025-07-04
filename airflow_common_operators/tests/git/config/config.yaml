@@ -2,3 +2,22 @@
 _target_: airflow_config.Configuration
 defaults:
   - extensions/libraries@extensions.libraries
+
+dags:
+  setup-env:
+    start_date: 2023-01-01
+    description: "this is an example dag"
+    schedule: "0 3 * * *"
+    tasks:
+      first:
+        _target_: airflow_config.BashOperator
+        bash_command: "echo '1'"
+      run:
+        _target_: airflow_common_operators.LibraryListSSHTask
+        git: ${extensions.libraries.git}
+        pip: ${extensions.libraries.pip}
+        dependencies: [first]
+      last:
+        _target_: airflow_config.BashOperator
+        bash_command: "echo '2'"
+        dependencies: [run]

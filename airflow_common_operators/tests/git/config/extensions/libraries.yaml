@@ -5,8 +5,11 @@ defaults: []
 _target_: airflow_common_operators.LibraryList
 pip:
   - name: lib1
+    version_constraint: ">=1.0"
   - name: lib2
+    version_constraint: "<=1.0"
   - name: lib3
+    version_constraint: "!=1.0"
 git:
   - name: git1
     repo: test
@@ -15,4 +18,3 @@ git:
     branch: develop
   - name: git3
     repo: test
-    
