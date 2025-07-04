@@ -16,16 +16,31 @@ __all__ = (
 Tool = Literal["pip", "uv"]
 
 
-def clone_repo(name: str, repo: str, branch: str = "main", *, install: bool = True, install_deps: bool = False, tool: Tool = "pip", dir: str = ""):
+def clone_repo(
+    name: str,
+    repo: str,
+    branch: str = "main",
+    *,
+    clean: bool = False,
+    install: bool = True,
+    install_deps: bool = False,
+    tool: Tool = "pip",
+    dir: str = "",
+):
     cmds = [
         f"[[ -d {name} ]] || git clone {repo}",
         f"pushd {name}",
         "git stash",
-        "git clean -fdx",
-        "git fetch --all --force",
-        f"git checkout {branch}",
-        f"git reset origin/{branch} --hard",
     ]
+    if clean:
+        cmds.append("git clean -fdx")
+    cmds.extend(
+        [
+            "git fetch --all --force",
+            f"git checkout {branch}",
+            f"git reset origin/{branch} --hard",
+        ]
+    )
     if dir:
         cmds.insert(0, f"cd {dir}")
         cmds.insert(0, f"mkdir -p {dir}")
@@ -42,6 +57,7 @@ class GitRepo(BaseModel):
     repo: str
     branch: str = "main"
 
+    clean: bool = False
     install: bool = True
     install_deps: bool = False
     tool: Tool = "pip"
@@ -49,7 +65,14 @@ class GitRepo(BaseModel):
 
     def clone(self):
         return clone_repo(
-            name=self.name, repo=self.repo, branch=self.branch, install=self.install, install_deps=self.install_deps, tool=self.tool, dir=self.dir
+            name=self.name,
+            repo=self.repo,
+            branch=self.branch,
+            clean=self.clean,
+            install=self.install,
+            install_deps=self.install_deps,
+            tool=self.tool,
+            dir=self.dir,
         )
 
 

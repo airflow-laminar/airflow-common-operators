@@ -11,7 +11,7 @@ class TestLibrary:
         assert p.install() == "bash -lc 'set -ex\npip install --target /tmp \"tmp>=3.2\"'"
 
     def test_git(self):
-        g = GitRepo(name="tmp", repo="tmp", branch="main", install=True, install_deps=False, tool="uv")
+        g = GitRepo(name="tmp", repo="tmp", branch="main", clean=True, install=True, install_deps=False, tool="uv")
         assert (
             g.clone()
             == "bash -lc 'set -ex\n[[ -d tmp ]] || git clone tmp\npushd tmp\ngit stash\ngit clean -fdx\ngit fetch --all --force\ngit checkout main\ngit reset origin/main --hard\nuv pip install --no-deps -e .'"
@@ -19,9 +19,9 @@ class TestLibrary:
         g = GitRepo(name="tmp", repo="tmp", branch="main", install=True, install_deps=True, tool="pip", dir="/tmp")
         assert (
             g.clone()
-            == "bash -lc 'set -ex\nmkdir -p /tmp\ncd /tmp\n[[ -d tmp ]] || git clone tmp\npushd tmp\ngit stash\ngit clean -fdx\ngit fetch --all --force\ngit checkout main\ngit reset origin/main --hard\npip install -e .'"
+            == "bash -lc 'set -ex\nmkdir -p /tmp\ncd /tmp\n[[ -d tmp ]] || git clone tmp\npushd tmp\ngit stash\ngit fetch --all --force\ngit checkout main\ngit reset origin/main --hard\npip install -e .'"
         )
         assert (
             clone_repo(name="tmp", repo="tmp", branch="main", install=False, install_deps=True, tool="uv")
-            == "bash -lc 'set -ex\n[[ -d tmp ]] || git clone tmp\npushd tmp\ngit stash\ngit clean -fdx\ngit fetch --all --force\ngit checkout main\ngit reset origin/main --hard'"
+            == "bash -lc 'set -ex\n[[ -d tmp ]] || git clone tmp\npushd tmp\ngit stash\ngit fetch --all --force\ngit checkout main\ngit reset origin/main --hard'"
         )
