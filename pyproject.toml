@@ -8,7 +8,7 @@ authors = [{name = "the airflow-common-operators authors", email = "t.paine154@g
 description = "Common operators and tasks for airflow"
 readme = "README.md"
 license = { text = "Apache-2.0" }
-version = "0.7.1"
+version = "0.7.2"
 requires-python = ">=3.9"
 keywords = []
 
@@ -56,7 +56,7 @@ Repository = "https://github.com/airflow-laminar/airflow-common-operators"
 Homepage = "https://github.com/airflow-laminar/airflow-common-operators"
 
 [tool.bumpversion]
-current_version = "0.7.1"
+current_version = "0.7.2"
 commit = true
 tag = true
 
