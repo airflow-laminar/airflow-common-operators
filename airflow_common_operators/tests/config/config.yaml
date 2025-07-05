@@ -22,3 +22,12 @@ dags:
         _target_: airflow_config.BashOperator
         bash_command: "echo '2'"
         dependencies: [run]
+  clean-journalctl:
+    start_date: 2023-01-01
+    description: "this is an example dag"
+    schedule: "0 3 * * *"
+    tasks:
+      clean:
+        _target_: airflow_common_operators.JournalctlCleanOperator
+        sudo: true
+        days: 2
