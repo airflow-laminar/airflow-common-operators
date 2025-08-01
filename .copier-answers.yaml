@@ -1,8 +1,9 @@
 # Changes here will be overwritten by Copier
-_commit: 9dfa165
+_commit: 9642da9
 _src_path: https://github.com/python-project-templates/base.git
 add_docs: false
 add_extension: python
+add_wiki: false
 email: t.paine154@gmail.com
 github: airflow-laminar
 project_description: Common operators and tasks for airflow

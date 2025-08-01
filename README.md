@@ -9,6 +9,7 @@ Common operators and tasks for Airflow
 
 ## Installation
 
+<<<<<<< before updating
 You can install from pip:
 
 ```bash
@@ -24,3 +25,7 @@ conda install airflow-common-operators -c conda-forge
 ## License
 
 This software is licensed under the Apache 2.0 license. See the [LICENSE](LICENSE) file for details.
+=======
+> [!NOTE]
+> This library was generated using [copier](https://copier.readthedocs.io/en/stable/) from the [Base Python Project Template repository](https://github.com/python-project-templates/base).
+>>>>>>> after updating
