@@ -50,6 +50,7 @@ develop = [
     "apache-airflow-providers-ssh",
     "apache-airflow-providers-standard",
     "airflow-config>=1",
+    "paramiko<4",
 ]
 
 [project.scripts]
