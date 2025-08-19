@@ -22,11 +22,20 @@ class LibraryOperatorBase(PythonOperator):
     _last_command: "PythonOperator"
 
     def __init__(
-        self, task_id: str, pip: List[PipLibrary], git: List[GitRepo], operator, operator_command_arg, command_prefix: Optional[str] = "", **kwargs
+        self,
+        task_id: str,
+        pip: List[PipLibrary],
+        git: List[GitRepo],
+        operator,
+        operator_command_arg,
+        parallel: Optional[bool] = False,
+        command_prefix: Optional[str] = "",
+        **kwargs,
     ):
         self.pip = pip
         self.git = git
         self.operator = operator
+        self.parallel = parallel
         if command_prefix:
             self.command_prefix = f"{command_prefix}\n"
         else:
@@ -56,7 +65,7 @@ class LibraryOperatorBase(PythonOperator):
             )
             # NOTE: overloading shift so use parent's
             PythonOperator.set_downstream(last_command, git_repo_clone_op)
-            last_command = git_repo_clone_op
+            last_command = self if self.parallel else git_repo_clone_op
 
         for pip_lib in self.pip:
             pip_lib_install_op = self.operator(
@@ -66,7 +75,7 @@ class LibraryOperatorBase(PythonOperator):
             )
             # NOTE: overloading shift so use parent's
             PythonOperator.set_downstream(last_command, pip_lib_install_op)
-            last_command = pip_lib_install_op
+            last_command = self if self.parallel else pip_lib_install_op
 
         # Overload sequence
         self._first_command = self
@@ -91,16 +100,19 @@ class LibraryOperatorBase(PythonOperator):
 
 
 class InstallLibraryOperator(LibraryOperatorBase):
-    def __init__(self, task_id: str, pip: List[PipLibrary], git: List[GitRepo], command_prefix: Optional[str] = "", **kwargs):
+    def __init__(
+        self, task_id: str, pip: List[PipLibrary], git: List[GitRepo], parallel: Optional[bool] = False, command_prefix: Optional[str] = "", **kwargs
+    ):
         from airflow.providers.standard.operators.bash import BashOperator
 
-        obj = LibraryListTaskArgs.model_validate({"pip": pip, "git": git})
+        obj = LibraryListTaskArgs.model_validate({"pip": pip, "git": git, "parallel": parallel, "command_prefix": command_prefix})
 
         super().__init__(
             task_id=task_id,
             pip=obj.pip,
             git=obj.git,
-            command_prefix=command_prefix,
+            parallel=obj.parallel,
+            command_prefix=obj.command_prefix,
             operator=BashOperator,
             operator_command_arg="bash_command",
             **kwargs,
@@ -108,26 +120,37 @@ class InstallLibraryOperator(LibraryOperatorBase):
 
 
 class InstallLibrarySSHOperator(LibraryOperatorBase):
-    def __init__(self, task_id: str, pip: List[PipLibrary], git: List[GitRepo], command_prefix: Optional[str] = "", **kwargs):
+    def __init__(
+        self, task_id: str, pip: List[PipLibrary], git: List[GitRepo], parallel: Optional[bool] = False, command_prefix: Optional[str] = "", **kwargs
+    ):
         from airflow.providers.ssh.operators.ssh import SSHOperator
 
-        obj = LibraryListSSHTaskArgs.model_validate({"pip": pip, "git": git})
+        obj = LibraryListSSHTaskArgs.model_validate({"pip": pip, "git": git, "parallel": parallel, "command_prefix": command_prefix})
 
         super().__init__(
-            task_id=task_id, pip=obj.pip, git=obj.git, command_prefix=command_prefix, operator=SSHOperator, operator_command_arg="command", **kwargs
+            task_id=task_id,
+            pip=obj.pip,
+            git=obj.git,
+            parallel=obj.parallel,
+            command_prefix=obj.command_prefix,
+            operator=SSHOperator,
+            operator_command_arg="command",
+            **kwargs,
         )
 
 
-class LibraryListTaskArgs(BashTaskArgs):
+class _LibraryCommonArgs:
     pip: List[PipLibrary] = Field(default_factory=list)
     git: List[GitRepo] = Field(default_factory=list)
+
+    parallel: Optional[bool] = Field(default=False)
     command_prefix: Optional[str] = Field(default="")
 
 
-class LibraryListSSHTaskArgs(SSHTaskArgs):
-    pip: List[PipLibrary] = Field(default_factory=list)
-    git: List[GitRepo] = Field(default_factory=list)
-    command_prefix: Optional[str] = Field(default="")
+class LibraryListTaskArgs(BashTaskArgs, _LibraryCommonArgs): ...
+
+
+class LibraryListSSHTaskArgs(SSHTaskArgs, _LibraryCommonArgs): ...
 
 
 class LibraryListTask(BashTask, LibraryListTaskArgs):
